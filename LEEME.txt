@@ -1,0 +1,41 @@
+ENGLISH TRACKER - Firebase + app instalable (APK)
+
+1) CREAR EL PROYECTO
+ - Entrá a https://console.firebase.google.com con tu cuenta de Google > "Agregar proyecto" > poné un nombre (ej: english-tracker). Podés desactivar Google Analytics.
+
+2) ACTIVAR EL LOGIN CON GOOGLE
+ - Menú "Compilación" > Authentication > Comenzar > pestaña "Método de acceso" > Google > Habilitar > elegí tu correo > Guardar.
+
+3) CREAR LA BASE DE DATOS
+ - Compilación > Firestore Database > Crear base de datos > modo producción > elegí una región cercana > Habilitar.
+ - Las reglas de seguridad ya vienen en el archivo firestore.rules (cada persona solo lee y escribe sus propios datos); se publican en el paso 6.
+
+4) REGISTRAR LA APP WEB Y COPIAR LA CONFIGURACIÓN
+ - Rueda de configuración > "Configuración del proyecto" > "Tus apps" > ícono </> (Web) > ponele un apodo > Registrar.
+ - Firebase te muestra un bloque "firebaseConfig". Copiá cada valor y pegalo en public/firebase-config.js, reemplazando los PEGAR_AQUI. (Esos datos no son secretos; la seguridad la dan las reglas.)
+
+5) INSTALAR LAS HERRAMIENTAS (una sola vez, en la compu)
+ - Instalá Node.js (https://nodejs.org). Abrí una terminal en esta carpeta y corré:
+     npm install -g firebase-tools
+     firebase login
+     firebase use --add        (elegí tu proyecto)
+
+6) PUBLICAR
+     firebase deploy
+ - Al terminar te da una dirección tipo https://TU-PROYECTO.web.app. Esa es tu app (también publica las reglas de Firestore).
+ - Si el login falla con "auth/unauthorized-domain": Authentication > Configuración > Dominios autorizados > agregá la dirección web.app que te dio.
+
+7) USARLA Y SINCRONIZAR
+ - Abrí la dirección en Chrome del celular y de la compu. Tocá el botón ☰ de arriba > "Iniciar sesión con Google". Con la misma cuenta en los dos, se sincroniza solo.
+ - Para instalarla en el celular: Chrome > menú ⋮ > "Instalar app" (o "Añadir a la pantalla de inicio"). Queda con ícono, en pantalla completa y funciona sin internet (se sincroniza cuando vuelve la conexión). Muchas veces esto alcanza y no hace falta APK.
+
+8) GENERAR LA APK (opcional)
+ - Entrá a https://www.pwabuilder.com > pegá tu dirección web.app > Start > "Package for stores" > Android > generá el paquete (usa Trusted Web Activity, que abre la app con Chrome y por eso el login de Google funciona).
+ - Descargá el .zip: trae la APK, y la clave de firma. GUARDÁ LA CLAVE Y SU CONTRASEÑA, la necesitás para actualizar la app.
+ - Pasá la APK al celular e instalala (te pide permitir "instalar apps de fuentes desconocidas").
+ - Para que no aparezca la barra de dirección arriba: PWABuilder te da un archivo assetlinks.json. Ponelo en public/.well-known/assetlinks.json y corré "firebase deploy" otra vez.
+ - No uses generadores de APK que empaquetan la página en un WebView: Google bloquea el login dentro de WebView.
+
+NOTAS
+ - Tus datos viven en tu cuenta de Firebase; además podés exportar un respaldo desde ☰ > Exportar.
+ - Si cambiás el código, volvé a correr "firebase deploy". La app instalada se actualiza sola al abrirla con internet.
